@@ -408,11 +408,10 @@
             }
         }
 
-        /* Skills Section */
+        /* Skills Section Styles */
         .skills {
-            padding: 5rem 10%;
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
+            padding: 5rem 2rem;
+            background: var(--light-bg);
             position: relative;
             overflow: hidden;
         }
@@ -422,393 +421,249 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg,
-                    rgba(99, 102, 241, 0.1),
-                    rgba(79, 70, 229, 0.1));
-            z-index: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+        }
+
+        .skills-categories {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .category-btn {
+            padding: 0.75rem 1.5rem;
+            border: 2px solid var(--secondary-color);
+            background: transparent;
+            color: var(--secondary-color);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: var(--secondary-color);
+            color: white;
         }
 
         .skills-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            position: relative;
-            z-index: 1;
+            opacity: 1 !important;
+            transform: none !important;
         }
 
         .skill-card {
-            background: var(--glass-bg);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             padding: 2rem;
-            border-radius: 20px;
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(5px);
-            transition: all 0.4s ease;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s ease;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 10px 30px var(--glass-shadow);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 2;
         }
 
         .skill-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             background: linear-gradient(45deg,
-                    rgba(99, 102, 241, 0.1),
-                    rgba(79, 70, 229, 0.1));
+                    rgba(255, 0, 128, 0.8),
+                    /* Hot Pink */
+                    rgba(255, 191, 0, 0.8),
+                    /* Golden Yellow */
+                    rgba(0, 255, 255, 0.8),
+                    /* Cyan */
+                    rgba(191, 0, 255, 0.8),
+                    /* Purple */
+                    rgba(0, 255, 128, 0.8)
+                    /* Spring Green */
+                );
+            background-size: 400% 400%;
             opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .skill-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            transition: opacity 0.5s ease;
+            z-index: -1;
         }
 
         .skill-card:hover::before {
             opacity: 1;
+            animation: gradientBG 8s ease infinite;
         }
 
-        .skill-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+        .skill-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
         }
 
         .skill-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(45deg,
-                    var(--primary-color),
-                    var(--secondary-color));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
-        }
-
-        .skill-title {
-            font-size: 1.5rem;
-            color: var(--primary-color);
-            margin: 0;
-        }
-
-        .skill-description {
-            color: var(--light-text);
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .skill-progress-container {
-            margin-top: 1rem;
-        }
-
-        .skill-progress {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
             position: relative;
-            height: 8px;
-            background: var(--glass-bg);
-            border-radius: 4px;
-            overflow: hidden;
-            margin-bottom: 0.5rem;
-        }
-
-        .skill-progress::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            background: linear-gradient(90deg,
-                    var(--primary-color),
-                    var(--secondary-color));
-            border-radius: 4px;
-            animation: progress 2s ease-out forwards;
-        }
-
-        .skill-progress-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
+            z-index: 2;
+            transition: all 0.5s ease;
         }
 
         .skill-name {
-            color: var(--text-color);
-            font-weight: 500;
-        }
-
-        .skill-percentage {
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-
-        @keyframes progress {
-            from {
-                width: 0;
-            }
-
-            to {
-                width: var(--progress);
-            }
-        }
-
-        .skill-tools {
-            margin-top: 1.5rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .skill-tool {
-            background: var(--glass-bg);
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: var(--primary-color);
-            border: 1px solid var(--glass-border);
-            transition: all 0.3s ease;
-        }
-
-        .skill-tool:hover {
-            background: var(--primary-color);
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        /* Projects Section */
-        .projects {
-            padding: 5rem 10%;
-            background-color: var(--section-bg);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .projects::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg,
-                    rgba(99, 102, 241, 0.1),
-                    rgba(79, 70, 229, 0.1));
-            z-index: 0;
-        }
-
-        .timeline {
-            position: relative;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 0;
-            z-index: 1;
-        }
-
-        .timeline::after {
-            content: '';
-            position: absolute;
-            width: 4px;
-            background: linear-gradient(to bottom,
-                    var(--primary-color),
-                    var(--secondary-color));
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            margin-left: -2px;
-            border-radius: 2px;
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
-        }
-
-        .timeline-item {
-            padding: 10px 40px;
-            position: relative;
-            width: 50%;
-            box-sizing: border-box;
-            transition: transform 0.3s ease;
-            margin-bottom: 3rem;
-        }
-
-        .timeline-item:nth-child(odd) {
-            left: 0;
-            padding-right: 60px;
-        }
-
-        .timeline-item:nth-child(even) {
-            left: 50%;
-            padding-left: 60px;
-        }
-
-        .timeline-item::after {
-            content: '';
-            position: absolute;
-            width: 25px;
-            height: 25px;
-            background: linear-gradient(45deg,
-                    var(--primary-color),
-                    var(--secondary-color));
-            border-radius: 50%;
-            top: 15px;
-            z-index: 1;
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
-            transition: all 0.3s ease;
-        }
-
-        .timeline-item:nth-child(odd)::after {
-            right: -12.5px;
-        }
-
-        .timeline-item:nth-child(even)::after {
-            left: -12.5px;
-        }
-
-        .project-card {
-            background: var(--glass-bg);
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid var(--glass-border);
-            transition: all 0.4s ease;
-            position: relative;
-            box-shadow: 0 10px 30px var(--glass-shadow);
-        }
-
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg,
-                    rgba(99, 102, 241, 0.1),
-                    rgba(79, 70, 229, 0.1));
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .project-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-        }
-
-        .project-card:hover::before {
-            opacity: 1;
-        }
-
-        .project-image {
-            height: 250px;
-            background: linear-gradient(45deg,
-                    var(--primary-color),
-                    var(--secondary-color));
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .project-image::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg,
-                    rgba(0, 0, 0, 0.3),
-                    transparent);
-        }
-
-        .project-image i {
-            font-size: 4rem;
-            color: rgba(255, 255, 255, 0.8);
-            z-index: 1;
-            transition: transform 0.3s ease;
-        }
-
-        .project-card:hover .project-image i {
-            transform: scale(1.2);
-        }
-
-        .project-info {
-            padding: 2rem;
-            position: relative;
-        }
-
-        .project-info h3 {
-            margin-bottom: 1rem;
-            color: var(--primary-color);
             font-size: 1.5rem;
-            transition: color 0.3s ease;
-        }
-
-        .project-card:hover .project-info h3 {
-            color: var(--secondary-color);
-        }
-
-        .project-info p {
-            color: var(--light-text);
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .project-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
+            color: var(--text-color);
             margin-bottom: 1rem;
+            position: relative;
+            z-index: 2;
+            transition: all 0.5s ease;
         }
 
-        .project-tag {
-            background: var(--glass-bg);
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: var(--primary-color);
-            border: 1px solid var(--glass-border);
-            transition: all 0.3s ease;
+        .skill-description {
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 2;
+            transition: all 0.5s ease;
         }
 
-        .project-tag:hover {
-            background: var(--primary-color);
-            color: white;
-            transform: translateY(-2px);
+        .skill-level {
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow: hidden;
+            position: relative;
+            z-index: 2;
         }
 
-        .project-links {
+        .skill-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), var(--secondary-color));
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+
+        .skill-card:hover .skill-progress {
+            background: linear-gradient(90deg,
+                    #ff0080,
+                    /* Hot Pink */
+                    #00ffff,
+                    /* Cyan */
+                    #bf00ff,
+                    /* Purple */
+                    #00ff80
+                    /* Spring Green */
+                );
+            background-size: 300% 300%;
+            animation: progressPulse 3s ease infinite;
+        }
+
+        .skill-tags {
             display: flex;
-            gap: 1rem;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .skill-tag {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .skill-card:hover .skill-tag {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        [data-theme="dark"] .skill-card {
+            background: rgba(26, 26, 46, 0.1);
+        }
+
+        [data-theme="dark"] .skill-card:hover {
+            background: rgba(26, 26, 46, 0.2);
+        }
+
+        @keyframes progressPulse {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 150%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .skill-details {
+            display: none;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .skill-card:hover .skill-details {
+            display: block;
+        }
+
+        .skill-projects {
             margin-top: 1rem;
         }
 
-        .project-link {
+        .skill-projects h4 {
             color: var(--primary-color);
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.3s ease;
+            margin-bottom: 0.5rem;
         }
 
-        .project-link:hover {
+        .project-list {
+            list-style: none;
+            padding-left: 1rem;
+        }
+
+        .project-list li {
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .project-list li::before {
+            content: '→';
             color: var(--secondary-color);
-            transform: translateX(5px);
+            position: absolute;
+            left: -1rem;
         }
 
-        .project-link i {
-            transition: transform 0.3s ease;
-        }
-
-        .project-link:hover i {
-            transform: translateX(5px);
-        }
-
+       
         /* Contact Section */
         .contact {
             padding: 5rem 10%;
@@ -1088,116 +943,206 @@
 
     <!-- Skills Section -->
     <section id="skills" class="skills">
-        <h2 class="section-title animate">My Skills</h2>
+        <h2 class="section-title">My Skills</h2>
+        <div class="skills-categories">
+            <button class="category-btn active" data-category="all">All Skills</button>
+            <button class="category-btn" data-category="frontend">Frontend</button>
+            <button class="category-btn" data-category="backend">Backend</button>
+            <button class="category-btn" data-category="tools">Tools & Others</button>
+        </div>
         <div class="skills-grid">
-            <div class="skill-card animate">
-                <div class="skill-header">
-                    <div class="skill-icon">
-                        <i class="fab fa-html5"></i>
-                    </div>
-                    <h3 class="skill-title">Frontend Development</h3>
+            <!-- Frontend Skills -->
+            <div class="skill-card" data-category="frontend">
+                <i class="fab fa-html5 skill-icon"></i>
+                <h3 class="skill-name">HTML5</h3>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 95%"></div>
                 </div>
-                <p class="skill-description">Building responsive and interactive user interfaces with modern web
-                    technologies.</p>
-                <div class="skill-progress-container">
-                    <div class="skill-progress-label">
-                        <span class="skill-name">HTML & CSS</span>
-                        <span class="skill-percentage">95%</span>
-                    </div>
-                    <div class="skill-progress" style="--progress: 95%"></div>
-                    <div class="skill-progress-label">
-                        <span class="skill-name">JavaScript</span>
-                        <span class="skill-percentage">90%</span>
-                    </div>
-                    <div class="skill-progress" style="--progress: 90%"></div>
-                    <div class="skill-progress-label">
-                        <span class="skill-name">React</span>
-                        <span class="skill-percentage">85%</span>
-                    </div>
-                    <div class="skill-progress" style="--progress: 85%"></div>
+                <p class="skill-description">Proficient in writing semantic HTML5 markup and implementing modern web
+                    standards.</p>
+
+            </div>
+            <div class="skill-card" data-category="frontend">
+                <i class="fab fa-css3-alt skill-icon"></i>
+                <h3 class="skill-name">CSS3</h3>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 90%"></div>
                 </div>
-                <div class="skill-tools">
-                    <span class="skill-tool">HTML5</span>
-                    <span class="skill-tool">CSS3</span>
-                    <span class="skill-tool">JavaScript</span>
-                    <span class="skill-tool">React</span>
-                    <span class="skill-tool">Vue.js</span>
-                    <span class="skill-tool">SASS</span>
+                <p class="skill-description">Expert in creating responsive layouts and implementing modern CSS
+                    techniques.</p>
+
+            </div>
+            <div class="skill-card" data-category="frontend">
+                <i class="fab fa-js skill-icon"></i>
+                <h3 class="skill-name">JavaScript</h3>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 85%"></div>
                 </div>
+                <p class="skill-description">Strong understanding of modern JavaScript concepts and best practices.</p>
+
+            </div>
+            <div class="skill-card" data-category="frontend">
+                <i class="fab fa-react skill-icon"></i>
+                <h3 class="skill-name">React</h3>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 80%"></div>
+                </div>
+                <p class="skill-description">Experience in building modern UI components and single-page applications.
+                </p>
+
+            </div>
+            <div class="skill-card" data-category="frontend">
+                <i class="fab fa-css3-alt skill-icon"></i>
+                <h3 class="skill-name">Tailwind CSS</h3>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 85%"></div>
+                </div>
+                <p class="skill-description">Building modern, responsive interfaces with utility-first CSS framework.
+                </p>
+
             </div>
 
-            <div class="skill-card animate delay-1">
-                <div class="skill-header">
-                    <div class="skill-icon">
-                        <i class="fas fa-server"></i>
-                    </div>
-                    <h3 class="skill-title">Backend Development</h3>
+            <!-- Backend Skills -->
+            <div class="skill-card" data-category="backend">
+                <i class="fab fa-node-js skill-icon"></i>
+                <h3 class="skill-name">Node.js</h3>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 75%"></div>
                 </div>
-                <p class="skill-description">Creating robust and scalable server-side applications and APIs.</p>
-                <div class="skill-progress-container">
-                    <div class="skill-progress-label">
-                        <span class="skill-name">Node.js</span>
-                        <span class="skill-percentage">85%</span>
-                    </div>
-                    <div class="skill-progress" style="--progress: 85%"></div>
-                    <div class="skill-progress-label">
-                        <span class="skill-name">Python</span>
-                        <span class="skill-percentage">80%</span>
-                    </div>
-                    <div class="skill-progress" style="--progress: 80%"></div>
-                    <div class="skill-progress-label">
-                        <span class="skill-name">PHP</span>
-                        <span class="skill-percentage">75%</span>
-                    </div>
-                    <div class="skill-progress" style="--progress: 75%"></div>
+                <p class="skill-description">Building scalable server-side applications and RESTful APIs.</p>
+
+            </div>
+            <div class="skill-card" data-category="backend">
+                <i class="fas fa-database skill-icon"></i>
+                <h3 class="skill-name">MongoDB</h3>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 70%"></div>
                 </div>
-                <div class="skill-tools">
-                    <span class="skill-tool">Node.js</span>
-                    <span class="skill-tool">Express</span>
-                    <span class="skill-tool">Python</span>
-                    <span class="skill-tool">Django</span>
-                    <span class="skill-tool">PHP</span>
-                    <span class="skill-tool">Laravel</span>
+                <p class="skill-description">Working with NoSQL databases and data modeling.</p>
+
+            </div>
+            <div class="skill-card" data-category="backend">
+                <i class="fas fa-database skill-icon"></i>
+                <h3 class="skill-name">MySQL</h3>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 75%"></div>
                 </div>
+                <p class="skill-description">Proficient in relational database management and SQL queries.</p>
+
+            </div>
+            <div class="skill-card" data-category="backend">
+                <i class="fas fa-fire skill-icon"></i>
+                <h3 class="skill-name">Firebase</h3>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 80%"></div>
+                </div>
+                <p class="skill-description">Building real-time applications with Firebase services.</p>
+
+            </div>
+            <div class="skill-card" data-category="backend">
+                <i class="fab fa-aws skill-icon"></i>
+                <h3 class="skill-name">AWS</h3>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 75%"></div>
+                </div>
+                <p class="skill-description">Cloud computing and infrastructure management with AWS.</p>
+
+            </div>
+            <div class="skill-card" data-category="backend">
+                <i class="fab fa-microsoft skill-icon"></i>
+                <h3 class="skill-name">.NET</h3>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 75%"></div>
+                </div>
+                <p class="skill-description">Developing enterprise applications with .NET framework.</p>
+
+            </div>
+            <div class="skill-card" data-category="backend">
+                <i class="fab fa-java skill-icon"></i>
+                <h3 class="skill-name">Java</h3>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 80%"></div>
+                </div>
+                <p class="skill-description">Building robust enterprise applications with Java.</p>
+
+            </div>
+            <div class="skill-card" data-category="backend">
+                <i class="fab fa-python skill-icon"></i>
+                <h3 class="skill-name">Python</h3>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 85%"></div>
+                </div>
+                <p class="skill-description">Developing applications and scripts with Python.</p>
+
+            </div>
+            <div class="skill-card" data-category="backend">
+                <i class="fas fa-code skill-icon"></i>
+                <h3 class="skill-name">C/C++</h3>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 80%"></div>
+                </div>
+                <p class="skill-description">System programming and performance-critical applications.</p>
+
+            </div>
+            <div class="skill-card" data-category="backend">
+                <i class="fas fa-code skill-icon"></i>
+                <h3 class="skill-name">C#</h3>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 75%"></div>
+                </div>
+                <p class="skill-description">Developing Windows applications and enterprise solutions.</p>
+
             </div>
 
-            <div class="skill-card animate delay-2">
-                <div class="skill-header">
-                    <div class="skill-icon">
-                        <i class="fas fa-database"></i>
-                    </div>
-                    <h3 class="skill-title">Database & Tools</h3>
+            <!-- Tools & Others -->
+            <div class="skill-card" data-category="tools">
+                <i class="fab fa-git-alt skill-icon"></i>
+                <h3 class="skill-name">Git</h3>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 85%"></div>
                 </div>
-                <p class="skill-description">Working with various databases and development tools for efficient
-                    workflow.</p>
-                <div class="skill-progress-container">
-                    <div class="skill-progress-label">
-                        <span class="skill-name">MongoDB</span>
-                        <span class="skill-percentage">85%</span>
-                    </div>
-                    <div class="skill-progress" style="--progress: 85%"></div>
-                    <div class="skill-progress-label">
-                        <span class="skill-name">MySQL</span>
-                        <span class="skill-percentage">80%</span>
-                    </div>
-                    <div class="skill-progress" style="--progress: 80%"></div>
-                    <div class="skill-progress-label">
-                        <span class="skill-name">Git</span>
-                        <span class="skill-percentage">90%</span>
-                    </div>
-                    <div class="skill-progress" style="--progress: 90%"></div>
+                <p class="skill-description">Version control and collaborative development workflows.</p>
+
+            </div>
+            <div class="skill-card" data-category="tools">
+                <i class="fab fa-linux skill-icon"></i>
+                <h3 class="skill-name">Linux</h3>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 80%"></div>
                 </div>
-                <div class="skill-tools">
-                    <span class="skill-tool">MongoDB</span>
-                    <span class="skill-tool">MySQL</span>
-                    <span class="skill-tool">PostgreSQL</span>
-                    <span class="skill-tool">Git</span>
-                    <span class="skill-tool">Docker</span>
-                    <span class="skill-tool">AWS</span>
+                <p class="skill-description">System administration and command-line operations.</p>
+
+            </div>
+            <div class="skill-card" data-category="tools">
+                <i class="fab fa-android skill-icon"></i>
+                <h3 class="skill-name">Android Studio</h3>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 80%"></div>
                 </div>
+                <p class="skill-description">Developing native Android applications with modern tools.</p>
+
+            </div>
+            <div class="skill-card" data-category="tools">
+                <i class="fas fa-palette skill-icon"></i>
+                <h3 class="skill-name">Canva</h3>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 90%"></div>
+                </div>
+                <p class="skill-description">Creating professional graphics and visual content.</p>
+
+            </div>
+            <div class="skill-card" data-category="tools">
+                <i class="fas fa-file-word skill-icon"></i>
+                <h3 class="skill-name">Microsoft Office</h3>
+                <div class="skill-level">
+                    <div class="skill-progress" style="width: 90%"></div>
+                </div>
+                <p class="skill-description">Proficient in Office suite for documentation and presentations.</p>
+
             </div>
         </div>
     </section>
+
 
     <!-- Contact Section -->
     <section id="contact" class="contact">
@@ -1422,6 +1367,58 @@
                 }, 3000);
             }
         });
+        // Skills Filtering
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const skillCards = document.querySelectorAll('.skill-card');
+
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+
+                const category = button.getAttribute('data-category');
+
+                skillCards.forEach(card => {
+                    if (category === 'all' || card.getAttribute('data-category') === category) {
+                        card.style.display = 'block';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, 100);
+                    } else {
+                        card.style.opacity = '0';
+                        card.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            card.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+
+        // Animate skill progress bars on scroll
+        const animateSkills = function () {
+            const skillCards = document.querySelectorAll('.skill-card');
+
+            skillCards.forEach(card => {
+                const cardPosition = card.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+
+                if (cardPosition < screenPosition) {
+                    const progressBar = card.querySelector('.skill-progress');
+                    const width = progressBar.style.width;
+                    progressBar.style.width = '0';
+                    setTimeout(() => {
+                        progressBar.style.width = width;
+                    }, 100);
+                }
+            });
+        };
+
+        window.addEventListener('scroll', animateSkills);
+        window.addEventListener('load', animateSkills);
     </script>
 </body>
 
