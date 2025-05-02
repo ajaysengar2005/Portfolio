@@ -1611,13 +1611,14 @@
             
             // Check if speech synthesis is supported
             if ('speechSynthesis' in window) {
-                // iOS specific handling
+                // Device detection
                 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                const isMac = /Macintosh|MacIntel|MacPPC|Mac68K/.test(navigator.userAgent);
                 
                 // Get available voices and select appropriate male voice
                 let voices = speechSynthesis.getVoices();
                 
-                // For iOS, we need to wait for voices to be loaded
+                // For iOS and Mac, we need to wait for voices to be loaded
                 if (voices.length === 0) {
                     speechSynthesis.onvoiceschanged = function() {
                         voices = speechSynthesis.getVoices();
@@ -1633,16 +1634,25 @@
                         const davidVoice = voices.find(voice => {
                             const voiceName = voice.name.toLowerCase();
                             return (
-                                voiceName.includes('david') ||
-                                voiceName.includes('microsoft david') ||
-                                voiceName.includes('microsoft david desktop') ||
-                                // iOS specific David voice identifiers
+                                // Mac voices
+                                (isMac && (
+                                    voiceName.includes('david') ||
+                                    voiceName.includes('alex') ||
+                                    voiceName.includes('daniel') ||
+                                    voiceName.includes('fred') ||
+                                    voiceName.includes('ralph')
+                                )) ||
+                                // iOS voices
                                 (isIOS && (
                                     voiceName.includes('en-us-david') ||
                                     voiceName.includes('en_us_david') ||
                                     voiceName.includes('david-en-us') ||
                                     voiceName.includes('david_en_us')
-                                ))
+                                )) ||
+                                // Windows voices
+                                voiceName.includes('microsoft david') ||
+                                voiceName.includes('microsoft david desktop') ||
+                                voiceName.includes('david')
                             );
                         });
 
@@ -1654,6 +1664,18 @@
                             const maleVoice = voices.find(voice => {
                                 const voiceName = voice.name.toLowerCase();
                                 return (
+                                    // Mac voices
+                                    (isMac && (
+                                        voiceName.includes('male') ||
+                                        voiceName.includes('en-us') ||
+                                        voiceName.includes('en_us') ||
+                                        voiceName.includes('en-gb') ||
+                                        voiceName.includes('en_gb') ||
+                                        voiceName.includes('alex') ||
+                                        voiceName.includes('daniel') ||
+                                        voiceName.includes('fred') ||
+                                        voiceName.includes('ralph')
+                                    )) ||
                                     // iOS voices
                                     (isIOS && (
                                         voiceName.includes('en-us') ||
@@ -1664,7 +1686,7 @@
                                         voiceName.includes('en-us-male') ||
                                         voiceName.includes('en_us_male')
                                     )) ||
-                                    // Desktop voices
+                                    // Windows voices
                                     voiceName.includes('microsoft david') ||
                                     voiceName.includes('david') ||
                                     voiceName.includes('microsoft david desktop') ||
@@ -1678,17 +1700,19 @@
                                     voiceName.includes('en_gb_male')
                                 ) && !voiceName.includes('female') &&
                                    !voiceName.includes('zira') &&
-                                   !voiceName.includes('samantha');
+                                   !voiceName.includes('samantha') &&
+                                   !voiceName.includes('karen') &&
+                                   !voiceName.includes('siri');
                             });
                             
                             if (maleVoice) {
                                 speech.voice = maleVoice;
                                 console.log('Using alternative male voice:', maleVoice.name);
                             } else {
-                                // For iOS, use the default voice if no male voice is found
-                                if (isIOS && voices.length > 0) {
+                                // For Mac and iOS, use the default voice if no male voice is found
+                                if ((isMac || isIOS) && voices.length > 0) {
                                     speech.voice = voices[0];
-                                    console.log('Using default iOS voice');
+                                    console.log('Using default system voice');
                                 } else {
                                     console.log('No suitable voice available');
                                     return;
@@ -1699,8 +1723,8 @@
 
                     // Play only on click
                     window.addEventListener('click', () => {
-                        // iOS requires user interaction
-                        if (isIOS) {
+                        // iOS and Mac require user interaction
+                        if (isIOS || isMac) {
                             speechSynthesis.cancel(); // Cancel any ongoing speech
                         }
                         speechSynthesis.speak(speech);
