@@ -702,6 +702,109 @@
                 }, 3000);
             }
         });
+
+        // Voice Command Recognition
+        function setupVoiceCommands() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                const recognition = new SpeechRecognition();
+                
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'en-US';
+
+                // Function to restart recognition
+                function restartRecognition() {
+                    try {
+                        recognition.stop();
+                    } catch (e) {
+                        console.log('Recognition already stopped');
+                    }
+                    setTimeout(() => {
+                        try {
+                            recognition.start();
+                        } catch (e) {
+                            console.log('Recognition already started');
+                        }
+                    }, 1000);
+                }
+
+                recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript.toLowerCase();
+                    console.log('Command recognized:', transcript);
+
+                    if (transcript.includes('go home') || transcript.includes('go to home')) {
+                        // Provide voice feedback before redirecting
+                        const feedback = new SpeechSynthesisUtterance("Going back to home");
+                        feedback.volume = 1.0;
+                        feedback.rate = 0.9;
+                        speechSynthesis.speak(feedback);
+                        // Small delay before redirecting to allow feedback to play
+                        setTimeout(() => {
+                            window.location.href = 'index.html#home';
+                        }, 1000);
+                    } else if (transcript.includes('open about') || transcript.includes('show about') || transcript.includes('go to about')) {
+                        // Provide voice feedback before redirecting
+                        const feedback = new SpeechSynthesisUtterance("Opening about section");
+                        feedback.volume = 1.0;
+                        feedback.rate = 0.9;
+                        speechSynthesis.speak(feedback);
+                        // Small delay before redirecting to allow feedback to play
+                        setTimeout(() => {
+                            window.location.href = 'index.html#about';
+                        }, 1000);
+                    } else if (transcript.includes('open skills') || transcript.includes('show skills') || transcript.includes('go to skills')) {
+                        // Provide voice feedback before redirecting
+                        const feedback = new SpeechSynthesisUtterance("Opening skills section");
+                        feedback.volume = 1.0;
+                        feedback.rate = 0.9;
+                        speechSynthesis.speak(feedback);
+                        // Small delay before redirecting to allow feedback to play
+                        setTimeout(() => {
+                            window.location.href = 'index.html#skills';
+                        }, 1000);
+                    } else if (transcript.includes('open contact') || transcript.includes('show contact') || transcript.includes('go to contact')) {
+                        // Provide voice feedback before redirecting
+                        const feedback = new SpeechSynthesisUtterance("Opening contact section");
+                        feedback.volume = 1.0;
+                        feedback.rate = 0.9;
+                        speechSynthesis.speak(feedback);
+                        // Small delay before redirecting to allow feedback to play
+                        setTimeout(() => {
+                            window.location.href = 'index.html#contact';
+                        }, 1000);
+                    } else {
+                        // If no valid command, restart recognition
+                        restartRecognition();
+                    }
+                };
+
+                recognition.onend = function() {
+                    // Restart recognition when it ends
+                    restartRecognition();
+                };
+
+                recognition.onerror = function(event) {
+                    console.error('Speech recognition error:', event.error);
+                    // Restart recognition on error
+                    restartRecognition();
+                };
+
+                // Start recognition on user interaction
+                document.addEventListener('click', () => {
+                    try {
+                        recognition.start();
+                    } catch (e) {
+                        console.log('Speech recognition already started');
+                    }
+                });
+            }
+        }
+
+        // Call the voice command setup when the page loads
+        window.addEventListener('load', () => {
+            setupVoiceCommands();
+        });
     </script>
 </body>
 
