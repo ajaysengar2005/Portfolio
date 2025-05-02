@@ -1629,45 +1629,70 @@
 
                 function setupVoice() {
                     if (voices.length > 0) {
-                        // Try to find a suitable male voice for the current device
-                        const maleVoice = voices.find(voice => {
+                        // Try to find David voice first
+                        const davidVoice = voices.find(voice => {
                             const voiceName = voice.name.toLowerCase();
                             return (
-                                // iOS voices
-                                (isIOS && (
-                                    voiceName.includes('en-us') ||
-                                    voiceName.includes('en_us') ||
-                                    voiceName.includes('en-gb') ||
-                                    voiceName.includes('en_gb')
-                                )) ||
-                                // Desktop voices
-                                voiceName.includes('microsoft david') ||
                                 voiceName.includes('david') ||
+                                voiceName.includes('microsoft david') ||
                                 voiceName.includes('microsoft david desktop') ||
-                                // Mobile voices
-                                voiceName.includes('male') ||
-                                voiceName.includes('en-us-male') ||
-                                voiceName.includes('en_us_male') ||
-                                voiceName.includes('google us male') ||
-                                // Additional male voice identifiers
-                                voiceName.includes('en-gb-male') ||
-                                voiceName.includes('en_gb_male')
-                            ) && !voiceName.includes('female') &&
-                               !voiceName.includes('zira') &&
-                               !voiceName.includes('samantha');
+                                // iOS specific David voice identifiers
+                                (isIOS && (
+                                    voiceName.includes('en-us-david') ||
+                                    voiceName.includes('en_us_david') ||
+                                    voiceName.includes('david-en-us') ||
+                                    voiceName.includes('david_en_us')
+                                ))
+                            );
                         });
-                        
-                        if (maleVoice) {
-                            speech.voice = maleVoice;
-                            console.log('Using voice:', maleVoice.name);
+
+                        if (davidVoice) {
+                            speech.voice = davidVoice;
+                            console.log('Using David voice:', davidVoice.name);
                         } else {
-                            // For iOS, use the default voice if no male voice is found
-                            if (isIOS && voices.length > 0) {
-                                speech.voice = voices[0];
-                                console.log('Using default iOS voice');
+                            // If David not found, try other male voices
+                            const maleVoice = voices.find(voice => {
+                                const voiceName = voice.name.toLowerCase();
+                                return (
+                                    // iOS voices
+                                    (isIOS && (
+                                        voiceName.includes('en-us') ||
+                                        voiceName.includes('en_us') ||
+                                        voiceName.includes('en-gb') ||
+                                        voiceName.includes('en_gb') ||
+                                        voiceName.includes('male') ||
+                                        voiceName.includes('en-us-male') ||
+                                        voiceName.includes('en_us_male')
+                                    )) ||
+                                    // Desktop voices
+                                    voiceName.includes('microsoft david') ||
+                                    voiceName.includes('david') ||
+                                    voiceName.includes('microsoft david desktop') ||
+                                    // Mobile voices
+                                    voiceName.includes('male') ||
+                                    voiceName.includes('en-us-male') ||
+                                    voiceName.includes('en_us_male') ||
+                                    voiceName.includes('google us male') ||
+                                    // Additional male voice identifiers
+                                    voiceName.includes('en-gb-male') ||
+                                    voiceName.includes('en_gb_male')
+                                ) && !voiceName.includes('female') &&
+                                   !voiceName.includes('zira') &&
+                                   !voiceName.includes('samantha');
+                            });
+                            
+                            if (maleVoice) {
+                                speech.voice = maleVoice;
+                                console.log('Using alternative male voice:', maleVoice.name);
                             } else {
-                                console.log('No suitable voice available');
-                                return;
+                                // For iOS, use the default voice if no male voice is found
+                                if (isIOS && voices.length > 0) {
+                                    speech.voice = voices[0];
+                                    console.log('Using default iOS voice');
+                                } else {
+                                    console.log('No suitable voice available');
+                                    return;
+                                }
                             }
                         }
                     }
