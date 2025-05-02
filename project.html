@@ -36,6 +36,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            cursor: none;
         }
 
         html {
@@ -123,6 +124,68 @@
 
         .theme-toggle:hover {
             transform: rotate(180deg);
+        }
+
+        /* Mobile Menu Button */
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1001;
+        }
+
+        .menu-btn:hover {
+            color: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .menu-btn {
+                display: block;
+                margin-right: 3rem;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background: var(--glass-bg);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                padding: 5rem 2rem;
+                transition: right 0.3s ease;
+                z-index: 1000;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links a {
+                font-size: 1.2rem;
+                margin: 1rem 0;
+            }
+
+            .theme-toggle {
+                position: fixed;
+                top: 1rem;
+                right: 1rem;
+                z-index: 1002;
+            }
+
+            .navbar {
+                justify-content: space-between;
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+            }
         }
 
         /* Projects Section */
@@ -215,34 +278,23 @@
             color: var(--primary-color);
         }
 
-      
-  
+        .timeline::after {
+            left: 31px;
+        }
 
- 
- 
-     
+        .timeline-item {
+            width: 100%;
+            padding-left: 70px;
+            padding-right: 25px;
+        }
 
-   
-        
+        .timeline-item::after {
+            left: 21px;
+        }
 
-            .timeline::after {
-                left: 31px;
-            }
-
-            .timeline-item {
-                width: 100%;
-                padding-left: 70px;
-                padding-right: 25px;
-            }
-
-            .timeline-item::after {
-                left: 21px;
-            }
-
-            .timeline-item:nth-child(even) {
-                left: 0;
-            }
-    
+        .timeline-item:nth-child(even) {
+            left: 0;
+        }
 
         @media (max-width: 480px) {
             .contact {
@@ -257,15 +309,88 @@
                 font-size: 1.8rem;
             }
         }
+
+        .cursor {
+            width: 30px;
+            height: 30px;
+            border: 2px solid var(--primary-color);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.2s ease;
+            mix-blend-mode: difference;
+            background: transparent;
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .cursor-follower {
+            width: 10px;
+            height: 10px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            mix-blend-mode: difference;
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .cursor.active {
+            transform: scale(0.8);
+            background: var(--primary-color);
+            box-shadow: 0 0 20px var(--primary-color);
+        }
+
+        .cursor-follower.active {
+            transform: scale(2);
+            background: var(--primary-color);
+            box-shadow: 0 0 20px var(--primary-color);
+        }
+
+        .cursor.hover {
+            transform: scale(1.5) rotate(45deg);
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 15px var(--secondary-color);
+        }
+
+        .cursor-follower.hover {
+            transform: scale(1.5);
+            background: var(--secondary-color);
+            box-shadow: 0 0 15px var(--secondary-color);
+        }
+
+        .cursor.pulse {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 
-<body>
+<body data-theme="dark">
     <div id="particles-js"></div>
 
     <!-- Navigation -->
     <nav class="navbar">
-        <div class="logo">Portfolio</div>
+        <div class="logo">Ajay Pratap Singh Sengar</div>
+        <button class="menu-btn">
+            <i class="fas fa-bars"></i>
+        </button>
         <div class="nav-links">
             <a href="index.html">Home</a>
             <a href="index.html#about">About</a>
@@ -273,7 +398,7 @@
             <a href="index.html#contact">Contact</a>
         </div>
         <button class="theme-toggle">
-            <i class="fas fa-moon"></i>
+            <i class="fas fa-sun"></i>
         </button>
     </nav>
 
@@ -311,12 +436,55 @@
         </div>
     </section>
 
-
-
-
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
+        // Custom Cursor
+        const cursor = document.querySelector('.cursor');
+        const cursorFollower = document.querySelector('.cursor-follower');
+
+        if (cursor && cursorFollower) {
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+                
+                setTimeout(() => {
+                    cursorFollower.style.left = e.clientX + 'px';
+                    cursorFollower.style.top = e.clientY + 'px';
+                }, 100);
+            });
+
+            // Add hover effect to interactive elements
+            const interactiveElements = document.querySelectorAll('a, button, .project-card, .skill-card, input, textarea');
+            
+            interactiveElements.forEach(element => {
+                element.addEventListener('mouseenter', () => {
+                    cursor.classList.add('hover');
+                    cursorFollower.classList.add('hover');
+                    cursor.classList.add('pulse');
+                });
+                
+                element.addEventListener('mouseleave', () => {
+                    cursor.classList.remove('hover');
+                    cursorFollower.classList.remove('hover');
+                    cursor.classList.remove('pulse');
+                });
+            });
+
+            // Add click effect
+            document.addEventListener('mousedown', () => {
+                cursor.classList.add('active');
+                cursorFollower.classList.add('active');
+            });
+
+            document.addEventListener('mouseup', () => {
+                cursor.classList.remove('active');
+                cursorFollower.classList.remove('active');
+            });
+        }
+
         // Particles.js Configuration
         particlesJS("particles-js", {
             particles: {
@@ -366,16 +534,52 @@
         const body = document.body;
         const icon = themeToggle.querySelector('i');
 
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        body.setAttribute('data-theme', savedTheme);
+        icon.classList.toggle('fa-moon', savedTheme === 'light');
+        icon.classList.toggle('fa-sun', savedTheme === 'dark');
+
         themeToggle.addEventListener('click', () => {
-            body.setAttribute('data-theme',
-                body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'
-            );
+            const newTheme = body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
             icon.classList.toggle('fa-moon');
             icon.classList.toggle('fa-sun');
         });
 
-        // Navigation Toggle
+        // Mobile Menu Toggle
+        const menuBtn = document.querySelector('.menu-btn');
         const navLinks = document.querySelector('.nav-links');
+
+        menuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = menuBtn.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.navbar') && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                const icon = menuBtn.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                const icon = menuBtn.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+
+        // Navigation Toggle
         const sections = document.querySelectorAll('section');
         const navItems = document.querySelectorAll('.nav-links a');
 
