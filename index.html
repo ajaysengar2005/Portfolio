@@ -36,6 +36,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            cursor: none;
         }
 
         html {
@@ -123,6 +124,22 @@
 
         .theme-toggle:hover {
             transform: rotate(180deg);
+        }
+
+        /* Mobile Menu Button */
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            z-index: 1001;
+        }
+
+        .menu-btn:hover {
+            color: var(--primary-color);
         }
 
         /* Hero Section */
@@ -479,16 +496,11 @@
             position: absolute;
             inset: 0;
             background: linear-gradient(45deg,
-                    rgba(255, 0, 128, 0.8),
-                    /* Hot Pink */
-                    rgba(255, 191, 0, 0.8),
-                    /* Golden Yellow */
-                    rgba(0, 255, 255, 0.8),
-                    /* Cyan */
-                    rgba(191, 0, 255, 0.8),
-                    /* Purple */
-                    rgba(0, 255, 128, 0.8)
-                    /* Spring Green */
+                    rgba(255, 0, 128, 0.8),  /* Hot Pink */
+                    rgba(255, 191, 0, 0.8),  /* Golden Yellow */
+                    rgba(0, 255, 255, 0.8),  /* Cyan */
+                    rgba(191, 0, 255, 0.8),  /* Purple */
+                    rgba(0, 255, 128, 0.8)   /* Spring Green */
                 );
             background-size: 400% 400%;
             opacity: 0;
@@ -496,15 +508,48 @@
             z-index: -1;
         }
 
+        .skill-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
         .skill-card:hover::before {
             opacity: 1;
             animation: gradientBG 8s ease infinite;
         }
 
-        .skill-card:hover {
-            transform: translateY(-10px);
-            border-color: rgba(255, 255, 255, 0.5);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        .skill-card:hover .skill-icon {
+            transform: scale(1.2) rotate(10deg);
+            color: white;
+        }
+
+        .skill-card:hover .skill-name {
+            transform: translateY(-5px);
+            color: white;
+        }
+
+        .skill-card:hover .skill-description {
+            transform: translateY(-5px);
+            color: white;
+        }
+
+        .skill-card:hover .skill-progress {
+            background: linear-gradient(90deg,
+                    #ff0080,  /* Hot Pink */
+                    #00ffff,  /* Cyan */
+                    #bf00ff,  /* Purple */
+                    #00ff80   /* Spring Green */
+                );
+            background-size: 300% 300%;
+            animation: progressPulse 3s ease infinite;
+        }
+
+        .skill-card:hover .skill-tag {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: white;
         }
 
         .skill-icon {
@@ -550,21 +595,6 @@
             transition: width 1s ease;
         }
 
-        .skill-card:hover .skill-progress {
-            background: linear-gradient(90deg,
-                    #ff0080,
-                    /* Hot Pink */
-                    #00ffff,
-                    /* Cyan */
-                    #bf00ff,
-                    /* Purple */
-                    #00ff80
-                    /* Spring Green */
-                );
-            background-size: 300% 300%;
-            animation: progressPulse 3s ease infinite;
-        }
-
         .skill-tags {
             display: flex;
             gap: 0.5rem;
@@ -584,12 +614,6 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .skill-card:hover .skill-tag {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
         [data-theme="dark"] .skill-card {
             background: rgba(26, 26, 46, 0.1);
         }
@@ -598,29 +622,25 @@
             background: rgba(26, 26, 46, 0.2);
         }
 
-        @keyframes progressPulse {
+        @keyframes gradientBG {
             0% {
                 background-position: 0% 50%;
             }
-
             50% {
-                background-position: 100% 50%;
+                background-position: 100% 150%;
             }
-
             100% {
                 background-position: 0% 50%;
             }
         }
 
-        @keyframes gradientBG {
+        @keyframes progressPulse {
             0% {
                 background-position: 0% 50%;
             }
-
             50% {
-                background-position: 100% 150%;
+                background-position: 100% 50%;
             }
-
             100% {
                 background-position: 0% 50%;
             }
@@ -672,6 +692,29 @@
             flex-direction: column;
             justify-content: center;
             background-color: var(--section-bg);
+            text-align: center;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            color: var(--text-color);
+            position: relative;
+            display: inline-block;
+            margin: 0 auto 2rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 3px;
         }
 
         .contact-form {
@@ -817,25 +860,48 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
+            .menu-btn {
+                display: block;
+                margin-right: 3rem;
+            }
+
             .nav-links {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background: white;
-                padding: 1rem;
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background: var(--glass-bg);
+                backdrop-filter: blur(10px);
                 flex-direction: column;
-                align-items: center;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                padding: 5rem 2rem;
+                transition: right 0.3s ease;
+                z-index: 1000;
             }
 
             .nav-links.active {
-                display: flex;
+                right: 0;
             }
 
-            .hamburger {
-                display: block;
+            .nav-links a {
+                font-size: 1.2rem;
+                margin: 1rem 0;
+            }
+
+            .theme-toggle {
+                position: fixed;
+                top: 1rem;
+                right: 1rem;
+                z-index: 1002;
+            }
+
+            .navbar {
+                justify-content: space-between;
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 1.2rem;
             }
 
             .hero-content h1 {
@@ -884,6 +950,76 @@
                 font-size: 1.8rem;
             }
         }
+
+        .cursor {
+            width: 30px;
+            height: 30px;
+            border: 2px solid var(--primary-color);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.2s ease;
+            mix-blend-mode: difference;
+            background: transparent;
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .cursor-follower {
+            width: 10px;
+            height: 10px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            mix-blend-mode: difference;
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .cursor.active {
+            transform: scale(0.8);
+            background: var(--primary-color);
+            box-shadow: 0 0 20px var(--primary-color);
+        }
+
+        .cursor-follower.active {
+            transform: scale(2);
+            background: var(--primary-color);
+            box-shadow: 0 0 20px var(--primary-color);
+        }
+
+        .cursor.hover {
+            transform: scale(1.5) rotate(45deg);
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 15px var(--secondary-color);
+        }
+
+        .cursor-follower.hover {
+            transform: scale(1.5);
+            background: var(--secondary-color);
+            box-shadow: 0 0 15px var(--secondary-color);
+        }
+
+        .cursor.pulse {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 
@@ -893,6 +1029,9 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="logo">Ajay Pratap Singh Sengar</div>
+        <button class="menu-btn">
+            <i class="fas fa-bars"></i>
+        </button>
         <div class="nav-links">
             <a href="#home">Home</a>
             <a href="#about">About</a>
@@ -919,7 +1058,7 @@
         <h2 class="section-title animate">About Me</h2>
         <div class="about-content">
             <div class="about-text animate">
-                <p>I’m Ajay Pratap Singh Sengar — a results-driven and highly motivated software developer with a proven ability to architect, design, and implement robust, scalable applications. I specialize in delivering high-performance solutions that combine technical precision with user-centric design.</p>
+                <p>I'm Ajay Pratap Singh Sengar — a results-driven and highly motivated software developer with a proven ability to architect, design, and implement robust, scalable applications. I specialize in delivering high-performance solutions that combine technical precision with user-centric design.</p>
                 <p>My work reflects a deep commitment to excellence, innovation, and continuous growth. I thrive in dynamic environments where I can apply my problem-solving skills, analytical thinking, and attention to detail to turn complex challenges into streamlined, impactful solutions.</p>
                 <p>Whether collaborating within a team or driving solo projects, I bring a strategic mindset and a passion for creating future-ready digital experiences that leave a lasting impression.</p>
                 <div class="about-buttons">
@@ -1184,6 +1323,9 @@
         <p>&copy; 2025 Ajay Pratap Singh Sengar. All rights reserved.</p>
     </footer>
 
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
         // Particles.js Configuration
@@ -1235,17 +1377,52 @@
         const body = document.body;
         const icon = themeToggle.querySelector('i');
 
+        // Check for saved theme preference
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        body.setAttribute('data-theme', savedTheme);
+        icon.classList.toggle('fa-moon', savedTheme === 'light');
+        icon.classList.toggle('fa-sun', savedTheme === 'dark');
+
         themeToggle.addEventListener('click', () => {
-            body.setAttribute('data-theme',
-                body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'
-            );
+            const newTheme = body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
             icon.classList.toggle('fa-moon');
             icon.classList.toggle('fa-sun');
         });
 
-        // Navigation Toggle
+        // Mobile Menu Toggle
+        const menuBtn = document.querySelector('.menu-btn');
         const navLinks = document.querySelector('.nav-links');
-        const sections = document.querySelectorAll('section');
+
+        menuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = menuBtn.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.navbar') && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                const icon = menuBtn.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+
+        // Close menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                const icon = menuBtn.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+        });
+
+        // Navigation Toggle
         const navItems = document.querySelectorAll('.nav-links a');
 
         window.addEventListener('scroll', () => {
@@ -1419,6 +1596,109 @@
 
         window.addEventListener('scroll', animateSkills);
         window.addEventListener('load', animateSkills);
+
+        // Custom Cursor
+        const cursor = document.querySelector('.cursor');
+        const cursorFollower = document.querySelector('.cursor-follower');
+
+        // Voice Greeting
+        function speakWelcomeMessage() {
+            const welcomeMessage = "Welcome to my portfolio! I'm Ajay Pratap Singh Sengar, a Full Stack Developer and Designer. Feel free to explore my work and skills.";
+            const speech = new SpeechSynthesisUtterance(welcomeMessage);
+            speech.volume = 1.0; // Set to 100% volume
+            speech.rate = 0.9;
+            speech.pitch = 1;
+            
+            // Check if speech synthesis is supported
+            if ('speechSynthesis' in window) {
+                // Get available voices and select Microsoft David voice
+                let voices = speechSynthesis.getVoices();
+                if (voices.length > 0) {
+                    // Specifically look for Microsoft David voice
+                    const davidVoice = voices.find(voice => 
+                        voice.name.toLowerCase() === 'microsoft david' ||
+                        voice.name.toLowerCase() === 'david' ||
+                        voice.name.toLowerCase() === 'microsoft david desktop'
+                    );
+                    
+                    if (davidVoice) {
+                        speech.voice = davidVoice;
+                        console.log('Using Microsoft David voice');
+                    } else {
+                        // If David is not available, try other male voices
+                        const maleVoice = voices.find(voice => {
+                            const voiceName = voice.name.toLowerCase();
+                            return (
+                                (voiceName.includes('male') || 
+                                 voiceName.includes('google us male')) &&
+                                !voiceName.includes('female') &&
+                                !voiceName.includes('zira') &&
+                                !voiceName.includes('samantha')
+                            );
+                        });
+                        
+                        if (maleVoice) {
+                            speech.voice = maleVoice;
+                            console.log('Using alternative male voice');
+                        } else {
+                            console.log('No suitable male voice available');
+                            return;
+                        }
+                    }
+                }
+
+                // Try to play automatically
+                try {
+                    speechSynthesis.speak(speech);
+                } catch (e) {
+                    // If automatic play fails, fall back to click interaction
+                    window.addEventListener('click', () => {
+                        speechSynthesis.speak(speech);
+                    }, { once: true });
+                }
+            }
+        }
+
+        // Call the welcome message function when the page loads
+        window.addEventListener('load', speakWelcomeMessage);
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            setTimeout(() => {
+                cursorFollower.style.left = e.clientX + 'px';
+                cursorFollower.style.top = e.clientY + 'px';
+            }, 100);
+        });
+
+        // Add hover effect to interactive elements
+        const interactiveElements = document.querySelectorAll('a, button, .project-card, .skill-card, input, textarea');
+        
+        interactiveElements.forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                cursor.classList.add('hover');
+                cursorFollower.classList.add('hover');
+                cursor.classList.add('pulse');
+            });
+            
+            element.addEventListener('mouseleave', () => {
+                cursor.classList.remove('hover');
+                cursorFollower.classList.remove('hover');
+                cursor.classList.remove('pulse');
+            });
+        });
+
+        // Add click effect
+        document.addEventListener('mousedown', () => {
+            cursor.classList.add('active');
+            cursorFollower.classList.add('active');
+        });
+
+        document.addEventListener('mouseup', () => {
+            cursor.classList.remove('active');
+            cursorFollower.classList.remove('active');
+        });
     </script>
 </body>
 
