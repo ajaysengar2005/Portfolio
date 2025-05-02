@@ -1647,15 +1647,10 @@
                     }
                 }
 
-                // Try to play automatically
-                try {
+                // Play only on click
+                window.addEventListener('click', () => {
                     speechSynthesis.speak(speech);
-                } catch (e) {
-                    // If automatic play fails, fall back to click interaction
-                    window.addEventListener('click', () => {
-                        speechSynthesis.speak(speech);
-                    }, { once: true });
-                }
+                }, { once: true });
             }
         }
 
