@@ -1611,43 +1611,76 @@
             
             // Check if speech synthesis is supported
             if ('speechSynthesis' in window) {
+                // iOS specific handling
+                const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                
                 // Get available voices and select appropriate male voice
                 let voices = speechSynthesis.getVoices();
-                if (voices.length > 0) {
-                    // Try to find a suitable male voice for the current device
-                    const maleVoice = voices.find(voice => {
-                        const voiceName = voice.name.toLowerCase();
-                        return (
-                            // Desktop voices
-                            voiceName.includes('microsoft david') ||
-                            voiceName.includes('david') ||
-                            voiceName.includes('microsoft david desktop') ||
-                            // Mobile voices
-                            voiceName.includes('male') ||
-                            voiceName.includes('en-us-male') ||
-                            voiceName.includes('en_us_male') ||
-                            voiceName.includes('google us male') ||
-                            // Additional male voice identifiers
-                            voiceName.includes('en-gb-male') ||
-                            voiceName.includes('en_gb_male')
-                        ) && !voiceName.includes('female') &&
-                           !voiceName.includes('zira') &&
-                           !voiceName.includes('samantha');
-                    });
-                    
-                    if (maleVoice) {
-                        speech.voice = maleVoice;
-                        console.log('Using male voice:', maleVoice.name);
-                    } else {
-                        console.log('No suitable male voice available');
-                        return;
-                    }
+                
+                // For iOS, we need to wait for voices to be loaded
+                if (voices.length === 0) {
+                    speechSynthesis.onvoiceschanged = function() {
+                        voices = speechSynthesis.getVoices();
+                        setupVoice();
+                    };
+                } else {
+                    setupVoice();
                 }
 
-                // Play only on click
-                window.addEventListener('click', () => {
-                    speechSynthesis.speak(speech);
-                }, { once: true });
+                function setupVoice() {
+                    if (voices.length > 0) {
+                        // Try to find a suitable male voice for the current device
+                        const maleVoice = voices.find(voice => {
+                            const voiceName = voice.name.toLowerCase();
+                            return (
+                                // iOS voices
+                                (isIOS && (
+                                    voiceName.includes('en-us') ||
+                                    voiceName.includes('en_us') ||
+                                    voiceName.includes('en-gb') ||
+                                    voiceName.includes('en_gb')
+                                )) ||
+                                // Desktop voices
+                                voiceName.includes('microsoft david') ||
+                                voiceName.includes('david') ||
+                                voiceName.includes('microsoft david desktop') ||
+                                // Mobile voices
+                                voiceName.includes('male') ||
+                                voiceName.includes('en-us-male') ||
+                                voiceName.includes('en_us_male') ||
+                                voiceName.includes('google us male') ||
+                                // Additional male voice identifiers
+                                voiceName.includes('en-gb-male') ||
+                                voiceName.includes('en_gb_male')
+                            ) && !voiceName.includes('female') &&
+                               !voiceName.includes('zira') &&
+                               !voiceName.includes('samantha');
+                        });
+                        
+                        if (maleVoice) {
+                            speech.voice = maleVoice;
+                            console.log('Using voice:', maleVoice.name);
+                        } else {
+                            // For iOS, use the default voice if no male voice is found
+                            if (isIOS && voices.length > 0) {
+                                speech.voice = voices[0];
+                                console.log('Using default iOS voice');
+                            } else {
+                                console.log('No suitable voice available');
+                                return;
+                            }
+                        }
+                    }
+
+                    // Play only on click
+                    window.addEventListener('click', () => {
+                        // iOS requires user interaction
+                        if (isIOS) {
+                            speechSynthesis.cancel(); // Cancel any ongoing speech
+                        }
+                        speechSynthesis.speak(speech);
+                    }, { once: true });
+                }
             }
         }
 
