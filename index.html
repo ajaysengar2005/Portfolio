@@ -1611,39 +1611,36 @@
             
             // Check if speech synthesis is supported
             if ('speechSynthesis' in window) {
-                // Get available voices and select Microsoft David voice
+                // Get available voices and select appropriate male voice
                 let voices = speechSynthesis.getVoices();
                 if (voices.length > 0) {
-                    // Specifically look for Microsoft David voice
-                    const davidVoice = voices.find(voice => 
-                        voice.name.toLowerCase() === 'microsoft david' ||
-                        voice.name.toLowerCase() === 'david' ||
-                        voice.name.toLowerCase() === 'microsoft david desktop'
-                    );
+                    // Try to find a suitable male voice for the current device
+                    const maleVoice = voices.find(voice => {
+                        const voiceName = voice.name.toLowerCase();
+                        return (
+                            // Desktop voices
+                            voiceName.includes('microsoft david') ||
+                            voiceName.includes('david') ||
+                            voiceName.includes('microsoft david desktop') ||
+                            // Mobile voices
+                            voiceName.includes('male') ||
+                            voiceName.includes('en-us-male') ||
+                            voiceName.includes('en_us_male') ||
+                            voiceName.includes('google us male') ||
+                            // Additional male voice identifiers
+                            voiceName.includes('en-gb-male') ||
+                            voiceName.includes('en_gb_male')
+                        ) && !voiceName.includes('female') &&
+                           !voiceName.includes('zira') &&
+                           !voiceName.includes('samantha');
+                    });
                     
-                    if (davidVoice) {
-                        speech.voice = davidVoice;
-                        console.log('Using Microsoft David voice');
+                    if (maleVoice) {
+                        speech.voice = maleVoice;
+                        console.log('Using male voice:', maleVoice.name);
                     } else {
-                        // If David is not available, try other male voices
-                        const maleVoice = voices.find(voice => {
-                            const voiceName = voice.name.toLowerCase();
-                            return (
-                                (voiceName.includes('male') || 
-                                 voiceName.includes('google us male')) &&
-                                !voiceName.includes('female') &&
-                                !voiceName.includes('zira') &&
-                                !voiceName.includes('samantha')
-                            );
-                        });
-                        
-                        if (maleVoice) {
-                            speech.voice = maleVoice;
-                            console.log('Using alternative male voice');
-                        } else {
-                            console.log('No suitable male voice available');
-                            return;
-                        }
+                        console.log('No suitable male voice available');
+                        return;
                     }
                 }
 
