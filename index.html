@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio | Your Name</title>
+    <title>Portfolio | Ajay Pratap Singh Sengar</title>
+    <link rel="icon" type="image/png" href="User.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -124,6 +125,33 @@
 
         .theme-toggle:hover {
             transform: rotate(180deg);
+        }
+
+        /* Microphone Toggle Button */
+        .mic-toggle {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            position: fixed;
+            top: 1rem;
+            right: 7rem;
+            z-index: 1002;
+            margin-right: 1.5rem;
+        }
+
+        .mic-toggle:hover {
+            color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .mic-toggle.active {
+            color: var(--primary-color);
+            animation: pulse 1s infinite;
         }
 
         /* Mobile Menu Button */
@@ -311,9 +339,6 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg,
-                    var(--primary-color),
-                    var(--secondary-color));
             opacity: 0.8;
         }
 
@@ -412,6 +437,12 @@
 
             .about-stats {
                 grid-template-columns: repeat(2, 1fr);
+            }
+
+            .mic-toggle {
+                top: 1rem;
+                right: 7rem;
+                margin-right: 1.5rem;
             }
         }
 
@@ -935,6 +966,12 @@
             .timeline-item::after {
                 left: 21px;
             }
+
+            .mic-toggle {
+                top: 1rem;
+                right: 7rem;
+                margin-right: 1.5rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1039,6 +1076,9 @@
             <a href="project.html">Projects</a>
             <a href="#contact">Contact</a>
         </div>
+        <button class="mic-toggle" title="Toggle Voice Commands">
+            <i class="fas fa-microphone"></i>
+        </button>
         <button class="theme-toggle">
             <i class="fas fa-sun"></i>
         </button>
@@ -1733,8 +1773,159 @@
             }
         }
 
+        // Voice Command Recognition
+        function setupVoiceCommands() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                const recognition = new SpeechRecognition();
+                const micToggle = document.querySelector('.mic-toggle');
+                let isListening = false;
+                
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'en-US';
+
+                // Function to start recognition
+                function startRecognition() {
+                    try {
+                        recognition.start();
+                        isListening = true;
+                        micToggle.classList.add('active');
+                        console.log('Voice recognition started');
+                    } catch (e) {
+                        console.log('Recognition already started');
+                    }
+                }
+
+                // Function to stop recognition
+                function stopRecognition() {
+                    try {
+                        recognition.stop();
+                        isListening = false;
+                        micToggle.classList.remove('active');
+                        console.log('Voice recognition stopped');
+                    } catch (e) {
+                        console.log('Recognition already stopped');
+                    }
+                }
+
+                // Function to restart recognition
+                function restartRecognition() {
+                    if (isListening) {
+                        try {
+                            recognition.stop();
+                        } catch (e) {
+                            console.log('Recognition already stopped');
+                        }
+                        setTimeout(() => {
+                            try {
+                                recognition.start();
+                            } catch (e) {
+                                console.log('Recognition already started');
+                            }
+                        }, 1000);
+                    }
+                }
+
+                // Toggle microphone button click handler
+                micToggle.addEventListener('click', () => {
+                    if (isListening) {
+                        stopRecognition();
+                    } else {
+                        startRecognition();
+                    }
+                });
+
+                recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript.toLowerCase();
+                    console.log('Command recognized:', transcript);
+
+                    if (transcript.includes('open projects') || transcript.includes('show projects')) {
+                        // Provide voice feedback before redirecting
+                        const feedback = new SpeechSynthesisUtterance("Opening my projects");
+                        feedback.volume = 1.0;
+                        feedback.rate = 0.9;
+                        speechSynthesis.speak(feedback);
+                        // Small delay before redirecting to allow feedback to play
+                        setTimeout(() => {
+                            window.location.href = 'project.html';
+                        }, 1000);
+                    } else if (transcript.includes('go home') || transcript.includes('go to home')) {
+                        // Scroll to home section
+                        const homeSection = document.getElementById('home');
+                        if (homeSection) {
+                            homeSection.scrollIntoView({ behavior: 'smooth' });
+                            // Provide voice feedback
+                            const feedback = new SpeechSynthesisUtterance("Going to home section");
+                            feedback.volume = 1.0;
+                            feedback.rate = 0.9;
+                            speechSynthesis.speak(feedback);
+                            restartRecognition();
+                        }
+                    } else if (transcript.includes('show skills') || transcript.includes('open skills')) {
+                        // Scroll to skills section
+                        const skillsSection = document.getElementById('skills');
+                        if (skillsSection) {
+                            skillsSection.scrollIntoView({ behavior: 'smooth' });
+                            // Provide voice feedback
+                            const feedback = new SpeechSynthesisUtterance("Showing my skills");
+                            feedback.volume = 1.0;
+                            feedback.rate = 0.9;
+                            speechSynthesis.speak(feedback);
+                            restartRecognition();
+                        }
+                    } else if (transcript.includes('show contact') || transcript.includes('open contact')) {
+                        // Scroll to contact section
+                        const contactSection = document.getElementById('contact');
+                        if (contactSection) {
+                            contactSection.scrollIntoView({ behavior: 'smooth' });
+                            // Provide voice feedback
+                            const feedback = new SpeechSynthesisUtterance("Opening contact section");
+                            feedback.volume = 1.0;
+                            feedback.rate = 0.9;
+                            speechSynthesis.speak(feedback);
+                            restartRecognition();
+                        }
+                    } else if (transcript.includes('show about') || transcript.includes('open about')) {
+                        // Scroll to about section
+                        const aboutSection = document.getElementById('about');
+                        if (aboutSection) {
+                            aboutSection.scrollIntoView({ behavior: 'smooth' });
+                            // Provide voice feedback
+                            const feedback = new SpeechSynthesisUtterance("Showing about section");
+                            feedback.volume = 1.0;
+                            feedback.rate = 0.9;
+                            speechSynthesis.speak(feedback);
+                            restartRecognition();
+                        }
+                    } else {
+                        // If no valid command, restart recognition
+                        restartRecognition();
+                    }
+                };
+
+                recognition.onend = function() {
+                    // Restart recognition when it ends if still listening
+                    if (isListening) {
+                        restartRecognition();
+                    }
+                };
+
+                recognition.onerror = function(event) {
+                    console.error('Speech recognition error:', event.error);
+                    // Restart recognition on error if still listening
+                    if (isListening) {
+                        restartRecognition();
+                    }
+                };
+            }
+        }
+
         // Call the welcome message function when the page loads
-        window.addEventListener('load', speakWelcomeMessage);
+        window.addEventListener('load', () => {
+            speakWelcomeMessage();
+            setupVoiceCommands();
+        });
 
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
