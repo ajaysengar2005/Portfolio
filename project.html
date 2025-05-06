@@ -245,6 +245,10 @@
             overflow: hidden;
             border: 1px solid var(--glass-border);
             transition: all 0.3s ease;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .project-card:hover {
@@ -254,19 +258,20 @@
 
         .project-image {
             height: 200px;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
             position: relative;
             overflow: hidden;
+            background: none;
         }
 
-        .project-image::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
+        .project-image img {
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, rgba(0, 0, 0, 0.3), transparent);
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover .project-image img {
+            transform: scale(1.1);
         }
 
         .project-info {
@@ -370,10 +375,12 @@
                 transform: scale(1);
                 opacity: 1;
             }
+
             50% {
                 transform: scale(1.2);
                 opacity: 0.8;
             }
+
             100% {
                 transform: scale(1);
                 opacity: 1;
@@ -405,33 +412,44 @@
     <!-- Projects Section -->
     <section id="projects" class="projects">
         <h2 class="section-title animate">My Projects</h2>
-        <div class="timeline">
-            <div class="timeline-item animate">
-                <div class="project-card">
-                    <div class="project-image"></div>
-                    <div class="project-info">
-                        <h3>Project 1</h3>
-                        <p>A modern web application built with React and Node.js</p>
-                    </div>
-                </div>
+
+        <div class="project-card">
+            <div class="project-image">
+                <img src="Portfolio.png" alt="Portfolio Project">
             </div>
-            <div class="timeline-item animate delay-1">
-                <div class="project-card">
-                    <div class="project-image"></div>
-                    <div class="project-info">
-                        <h3>Project 2</h3>
-                        <p>An e-commerce platform with real-time features</p>
-                    </div>
-                </div>
+            <div class="project-info">
+                <h3>PORTFOLIO</h3>
+                <p>A modern web application built with React and Node.js</p>
             </div>
-            <div class="timeline-item animate delay-2">
-                <div class="project-card">
-                    <div class="project-image"></div>
-                    <div class="project-info">
-                        <h3>Project 3</h3>
-                        <p>A social media dashboard with analytics</p>
-                    </div>
-                </div>
+        </div>
+
+        <div class="project-card">
+            <div class="project-image">
+                <img src="CHATIFY.png" alt="Chatify Project">
+            </div>
+            <div class="project-info">
+                <h3>CHATIFY</h3>
+                <p>An e-commerce platform with real-time features</p>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <div class="project-image">
+                <img src="StudentManagementSystem.png" alt="Student Management System">
+            </div>
+            <div class="project-info">
+                <h3>STUDENT MANAGEMENT SYSTEM</h3>
+                <p>A social media dashboard with analytics</p>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <div class="project-image">
+                <img src="calculator.png" alt="Calculator Project">
+            </div>
+            <div class="project-info">
+                <h3>CALCULATOR</h3>
+                <p>A social media dashboard with analytics</p>
             </div>
         </div>
     </section>
@@ -449,7 +467,7 @@
             document.addEventListener('mousemove', (e) => {
                 cursor.style.left = e.clientX + 'px';
                 cursor.style.top = e.clientY + 'px';
-                
+
                 setTimeout(() => {
                     cursorFollower.style.left = e.clientX + 'px';
                     cursorFollower.style.top = e.clientY + 'px';
@@ -458,14 +476,14 @@
 
             // Add hover effect to interactive elements
             const interactiveElements = document.querySelectorAll('a, button, .project-card, .skill-card, input, textarea');
-            
+
             interactiveElements.forEach(element => {
                 element.addEventListener('mouseenter', () => {
                     cursor.classList.add('hover');
                     cursorFollower.classList.add('hover');
                     cursor.classList.add('pulse');
                 });
-                
+
                 element.addEventListener('mouseleave', () => {
                     cursor.classList.remove('hover');
                     cursorFollower.classList.remove('hover');
@@ -708,103 +726,149 @@
             if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
                 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
                 const recognition = new SpeechRecognition();
-                
+                const micToggle = document.querySelector('.mic-toggle');
+                let isListening = false;
+
                 recognition.continuous = false;
                 recognition.interimResults = false;
                 recognition.lang = 'en-US';
 
-                // Function to restart recognition
-                function restartRecognition() {
+                // Function to start recognition
+                function startRecognition() {
+                    try {
+                        recognition.start();
+                        isListening = true;
+                        micToggle.classList.add('active');
+                        console.log('Voice recognition started');
+                    } catch (e) {
+                        console.log('Recognition already started');
+                    }
+                }
+
+                // Function to stop recognition
+                function stopRecognition() {
                     try {
                         recognition.stop();
+                        isListening = false;
+                        micToggle.classList.remove('active');
+                        console.log('Voice recognition stopped');
                     } catch (e) {
                         console.log('Recognition already stopped');
                     }
-                    setTimeout(() => {
-                        try {
-                            recognition.start();
-                        } catch (e) {
-                            console.log('Recognition already started');
-                        }
-                    }, 1000);
                 }
 
-                recognition.onresult = function(event) {
+                // Function to restart recognition
+                function restartRecognition() {
+                    if (isListening) {
+                        try {
+                            recognition.stop();
+                        } catch (e) {
+                            console.log('Recognition already stopped');
+                        }
+                        setTimeout(() => {
+                            try {
+                                recognition.start();
+                            } catch (e) {
+                                console.log('Recognition already started');
+                            }
+                        }, 1000);
+                    }
+                }
+
+                // Toggle microphone button click handler
+                micToggle.addEventListener('click', () => {
+                    if (isListening) {
+                        stopRecognition();
+                    } else {
+                        startRecognition();
+                    }
+                });
+
+                recognition.onresult = function (event) {
                     const transcript = event.results[0][0].transcript.toLowerCase();
                     console.log('Command recognized:', transcript);
 
-                    if (transcript.includes('go home') || transcript.includes('go to home')) {
+                    if (transcript.includes('open projects') || transcript.includes('show projects')) {
                         // Provide voice feedback before redirecting
-                        const feedback = new SpeechSynthesisUtterance("Going back to home");
+                        const feedback = new SpeechSynthesisUtterance("Opening my projects");
                         feedback.volume = 1.0;
                         feedback.rate = 0.9;
                         speechSynthesis.speak(feedback);
                         // Small delay before redirecting to allow feedback to play
                         setTimeout(() => {
-                            window.location.href = 'index.html#home';
+                            window.location.href = 'project.html';
                         }, 1000);
-                    } else if (transcript.includes('open about') || transcript.includes('show about') || transcript.includes('go to about')) {
-                        // Provide voice feedback before redirecting
-                        const feedback = new SpeechSynthesisUtterance("Opening about section");
-                        feedback.volume = 1.0;
-                        feedback.rate = 0.9;
-                        speechSynthesis.speak(feedback);
-                        // Small delay before redirecting to allow feedback to play
-                        setTimeout(() => {
-                            window.location.href = 'index.html#about';
-                        }, 1000);
-                    } else if (transcript.includes('open skills') || transcript.includes('show skills') || transcript.includes('go to skills')) {
-                        // Provide voice feedback before redirecting
-                        const feedback = new SpeechSynthesisUtterance("Opening skills section");
-                        feedback.volume = 1.0;
-                        feedback.rate = 0.9;
-                        speechSynthesis.speak(feedback);
-                        // Small delay before redirecting to allow feedback to play
-                        setTimeout(() => {
-                            window.location.href = 'index.html#skills';
-                        }, 1000);
-                    } else if (transcript.includes('open contact') || transcript.includes('show contact') || transcript.includes('go to contact')) {
-                        // Provide voice feedback before redirecting
-                        const feedback = new SpeechSynthesisUtterance("Opening contact section");
-                        feedback.volume = 1.0;
-                        feedback.rate = 0.9;
-                        speechSynthesis.speak(feedback);
-                        // Small delay before redirecting to allow feedback to play
-                        setTimeout(() => {
-                            window.location.href = 'index.html#contact';
-                        }, 1000);
+                    } else if (transcript.includes('go home') || transcript.includes('go to home')) {
+                        // Scroll to home section
+                        const homeSection = document.getElementById('home');
+                        if (homeSection) {
+                            homeSection.scrollIntoView({ behavior: 'smooth' });
+                            // Provide voice feedback
+                            const feedback = new SpeechSynthesisUtterance("Going to home section");
+                            feedback.volume = 1.0;
+                            feedback.rate = 0.9;
+                            speechSynthesis.speak(feedback);
+                            restartRecognition();
+                        }
+                    } else if (transcript.includes('show skills') || transcript.includes('open skills')) {
+                        // Scroll to skills section
+                        const skillsSection = document.getElementById('skills');
+                        if (skillsSection) {
+                            skillsSection.scrollIntoView({ behavior: 'smooth' });
+                            // Provide voice feedback
+                            const feedback = new SpeechSynthesisUtterance("Showing my skills");
+                            feedback.volume = 1.0;
+                            feedback.rate = 0.9;
+                            speechSynthesis.speak(feedback);
+                            restartRecognition();
+                        }
+                    } else if (transcript.includes('show contact') || transcript.includes('open contact')) {
+                        // Scroll to contact section
+                        const contactSection = document.getElementById('contact');
+                        if (contactSection) {
+                            contactSection.scrollIntoView({ behavior: 'smooth' });
+                            // Provide voice feedback
+                            const feedback = new SpeechSynthesisUtterance("Opening contact section");
+                            feedback.volume = 1.0;
+                            feedback.rate = 0.9;
+                            speechSynthesis.speak(feedback);
+                            restartRecognition();
+                        }
+                    } else if (transcript.includes('show about') || transcript.includes('open about')) {
+                        // Scroll to about section
+                        const aboutSection = document.getElementById('about');
+                        if (aboutSection) {
+                            aboutSection.scrollIntoView({ behavior: 'smooth' });
+                            // Provide voice feedback
+                            const feedback = new SpeechSynthesisUtterance("Showing about section");
+                            feedback.volume = 1.0;
+                            feedback.rate = 0.9;
+                            speechSynthesis.speak(feedback);
+                            restartRecognition();
+                        }
                     } else {
                         // If no valid command, restart recognition
                         restartRecognition();
                     }
                 };
 
-                recognition.onend = function() {
-                    // Restart recognition when it ends
-                    restartRecognition();
-                };
-
-                recognition.onerror = function(event) {
-                    console.error('Speech recognition error:', event.error);
-                    // Restart recognition on error
-                    restartRecognition();
-                };
-
-                // Start recognition on user interaction
-                document.addEventListener('click', () => {
-                    try {
-                        recognition.start();
-                    } catch (e) {
-                        console.log('Speech recognition already started');
+                recognition.onend = function () {
+                    // Restart recognition when it ends if still listening
+                    if (isListening) {
+                        restartRecognition();
                     }
-                });
+                };
+
+                recognition.onerror = function (event) {
+                    console.error('Speech recognition error:', event.error);
+                    // Restart recognition on error if still listening
+                    if (isListening) {
+                        restartRecognition();
+                    }
+                };
             }
         }
 
-        // Call the voice command setup when the page loads
-        window.addEventListener('load', () => {
-            setupVoiceCommands();
-        });
     </script>
 </body>
 
