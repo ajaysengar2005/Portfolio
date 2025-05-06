@@ -136,11 +136,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 - **LinkedIn:** [Ajay Pratap Singh Sengar](https://www.linkedin.com/in/ajaypratapsinghsengar/)
 - **GitHub:** [@ajaysengar2005](https://github.com/ajaysengar2005)
-- **Portfolio:** [Live Demo](https://ajaysengar2005.github.io/portfolio)
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+- **Portfolio:** [Live Demo](https://ajayportfolio-beta.vercel.app/)
 
 ## 🙏 Acknowledgments
 
