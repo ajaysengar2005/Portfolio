@@ -5,7 +5,7 @@
   
   [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue)](https://www.linkedin.com/in/ajaypratapsinghsengar/)
   [![GitHub](https://img.shields.io/badge/GitHub-Follow-lightgrey)](https://github.com/ajaysengar2005)
-  [![Portfolio](https://ajayportfolio-beta.vercel.app/)](https://ajaysengar2005.github.io/portfolio)
+  [![Portfolio](https://img.shields.io/badge/ajayportfolio-beta.vercel.app/)](https://ajaysengar2005.github.io/portfolio)
 </div>
 
 ## 📋 Table of Contents
