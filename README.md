@@ -26,7 +26,7 @@ A modern, responsive portfolio website built with HTML5, CSS3, and JavaScript. T
 ## 🌟 Features
 
 ### Interactive UI/UX
-- ✨ Custom cursor animations with hover effects
+- ✨ Custom animations with hover effects
 - 🎯 Smooth scrolling navigation
 - 🌓 Dark/Light theme toggle with local storage
 - 🌌 Dynamic Particle.js background effects
@@ -76,7 +76,7 @@ A modern, responsive portfolio website built with HTML5, CSS3, and JavaScript. T
 
 1. Clone the repository
 ```bash
-git clone https://github.com/ajaysengar2005/portfolio.git
+https://github.com/ajaysengar2005/Portfolio
 ```
 
 2. Navigate to project directory
